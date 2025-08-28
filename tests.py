@@ -1,9 +1,13 @@
-from functions.get_files_info import get_files_info
-from functions.get_file_content import get_file_content
+from functions.write_file import write_file
 
 
 working_dir = "calculator"
-test_file = ("main.py", "pkg/calculator.py", "/bin/cat", "pkg/does_not_exist.py")
-for i, file in enumerate(test_file, start=1):
-    print(f"Test {i}\nResult for file: {file}")
-    print(get_file_content(working_dir, file))
+cases = (
+    ("lorem.txt", "wait, this isn't lorem ipsum"),
+    ("pkg/morelorem.txt", "lorem ipsum dolor sit amet"),
+    ("/tmp/temp.txt", "this should not be allowed"),
+)
+for i, (path, content) in enumerate(cases, start=1):
+    print(f"Test {i}\nResult for file: {path}")
+    print(write_file(working_dir, path, content))
+    print()
