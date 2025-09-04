@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
+from prompts import system_prompt
+
 
 def generate_content(client, messages, user_prompt, is_verbose):
     # Retrieve a response and display it, along with token count metadata
@@ -11,6 +13,7 @@ def generate_content(client, messages, user_prompt, is_verbose):
     response = client.models.generate_content(
         model=model,
         contents=messages,
+        config=types.GenerateContentConfig(system_instruction=system_prompt),
     )
 
     print("-" * 100)
@@ -30,11 +33,12 @@ def generate_content(client, messages, user_prompt, is_verbose):
 
 
 def main():
-    # Get prompt from user. If no prompt is provided, exit without calling the API
+    # get prompt from user. if no prompt is provided, exit without calling the API
     args = sys.argv[1:]
     if not args:
         print("Gemini AI Code Assistant")
         print('\nUsage: py main.py "your prompt here"')
+        print('Example: py main.py "How do I fix the calculator?"')
         sys.exit(1)
     is_verbose = "--verbose" in args
     prompt_args = [arg for arg in args if not arg.startswith("--")]
