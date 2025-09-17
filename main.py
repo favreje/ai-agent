@@ -5,6 +5,7 @@ from google import genai
 from google.genai import types
 
 from prompts import system_prompt
+from functions.schemas import available_functions
 
 
 def generate_content(client, messages, user_prompt, is_verbose):
@@ -13,13 +14,21 @@ def generate_content(client, messages, user_prompt, is_verbose):
     response = client.models.generate_content(
         model=model,
         contents=messages,
-        config=types.GenerateContentConfig(system_instruction=system_prompt),
+        config=types.GenerateContentConfig(
+            tools=[available_functions], system_instruction=system_prompt
+        ),
     )
 
     print("-" * 100)
     print("AI Agent")
     print("-" * 100)
-    print(response.text)
+
+    if not response.function_calls:
+        return response.text
+
+    for function_call in response.function_calls:
+        print(f"Calling function: {function_call.name}({function_call.args})")
+
     print("-" * 100)
 
     if is_verbose:
