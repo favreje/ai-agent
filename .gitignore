@@ -3,5 +3,6 @@
 *.pyc
 *.txt
 *.py[oc]
+calculator/README.md
 __pycache__/
 __init__.py

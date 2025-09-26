@@ -1,6 +1,6 @@
 import os
 
-from .config import MAX_CHARS
+from config import MAX_CHARS
 
 
 def get_file_content(working_directory, file_path):
@@ -12,7 +12,9 @@ def get_file_content(working_directory, file_path):
 
     abs_working_directory = os.path.abspath(working_directory) + os.sep
     if not abs_file_path.startswith(abs_working_directory):
-        return f'Error: Cannot read "{file_path}" as it is outside the permitted working directory\n'
+        return (
+            f'Error: Cannot read "{file_path}" as it is outside the permitted working directory\n'
+        )
 
     try:
         with open(abs_file_path, "r", encoding="utf-8", errors="replace") as f:
